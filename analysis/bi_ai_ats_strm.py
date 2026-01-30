@@ -14,8 +14,8 @@ st.set_page_config(page_title="Austin Crash Intelligence", layout="wide")
 @st.cache_data
 def load_data():
     # REPLACE THIS with the actual full path on your computer
-    file_name = r'C:\Users\itai.makubise\code_nova\atx_crash_2025.csv' 
-    
+    file_name = r'C:\Users\itai.makubise\code_nova\poc_land\data\atx_crash_2025.csv' 
+
     if not os.path.exists(file_name):
         return None
     
