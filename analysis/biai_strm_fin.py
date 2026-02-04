@@ -13,8 +13,11 @@ def load_data():
     # Use the 'r' before the quotes for Windows paths
     file_path =     "atx_crash_data_2018-2026_cleansed.csv"
 
-    if not os.path.exists(file_path):
-        return None
+if os.path.exists(file_path):
+    df = pd.read_csv(file_path)
+else:
+    st.error(f"File not found at {file_path}. Check your GitHub repo!")
+ 
     
     df = pd.read_csv(file_path, low_memory=False)
     
