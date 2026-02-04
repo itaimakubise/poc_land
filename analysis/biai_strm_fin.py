@@ -1,15 +1,20 @@
-# --- DATA LOADING ---
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import os
+
+# 1. Config must be the first Streamlit command
+st.set_page_config(page_title="Austin Crash Command Center 2025", layout="wide")
+
+# 2. Define the loading function
 @st.cache_data
 def load_data():
-    # 1. Define the path inside the function
     file_path = "atx_crash_data_2018-2026_cleansed.csv"
-
-    # 2. Check if file exists BEFORE trying to read it
+    
     if not os.path.exists(file_path):
-        # We return None so the script doesn't crash here
         return None
-
-    # 3. Read the data (All these lines MUST be indented)
+        
+    # Read the data
     df = pd.read_csv(file_path, low_memory=False)
     
     # Preprocessing
@@ -27,13 +32,12 @@ def load_data():
     # Flag for Vulnerable Road Users (VRU)
     df['is_vru_fatal'] = (df['pedestrian_death_count'] > 0) | (df['bicycle_death_count'] > 0)
     
-    return df # This now sits correctly inside the function
+    return df
 
-# --- EXECUTION ---
+# 3. Call the function
 df_raw = load_data()
 
-# --- SAFETY GATE ---
+# 4. Error Handling
 if df_raw is None:
-    st.error("🛑 File not found. Please ensure 'atx_crash_data_2018-2026_cleansed.csv' is in your GitHub repository root.")
+    st.error("🛑 File not found. Ensure the CSV is in the same GitHub folder as this script.")
     st.stop()
-    
