@@ -1,7 +1,36 @@
+import ssl
+
+# This bypasses the certificate verification check
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
 import pandas as pd
 import time
+
+import sys
+!{sys.executable} -m pip install nba_api
+
 from nba_api.stats.endpoints import playergamelogs
 from nba_api.stats.static import players
+
+import certifi
+import os
+
+# Tell the system to use the certifi certificates
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+from nba_api.stats.endpoints import playergamelogs
+test = playergamelogs.PlayerGameLogs(season_nullable='2025-26', last_n_games_nullable=1)
+print("✅ Connection Successful!")
+
+
+
+
 
 def fetch_current_season_data(season='2025-26'):
     """
@@ -35,8 +64,7 @@ def fetch_current_season_data(season='2025-26'):
     return df
 
 # Run the fetcher
-nba_data = fetch_current_season_data()
-
+d
 # Quick look at the data
 print(nba_data.head())
 
